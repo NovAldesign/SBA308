@@ -1,4 +1,5 @@
-What could you have done differently during the planning stages of your project to make the execution easier?
+What could you have done differently during the planning stages of your project to make the execution easier? 
+-Start with Psuedo code, I intial started trying to write the code based on what we had been asked to do, but I ended up removing the code and started back at square on writing the psuedo code to help me understand what I had and what I needed to accomplish.
 
 Were there any requirements that were difficult to implement? What do you think would make them easier to implement in future projects?
 
