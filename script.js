@@ -112,7 +112,7 @@ const LearnerSubmissions = [
 // Create and manipulate arrays and objects
 // Use functions to handle repeated tasks
 
-// FUNCTION: Find assignment by ID
+//  Find assignment by ID
 // Uses: for...of loop 
 function findAssignmentById(assignments, assignmentId) {
   for (const assignment of assignments) {
@@ -132,7 +132,21 @@ function isAssignmentDue(dueDate) {
   return due <= currentDate;
 }
 
+// Calculate late penalty
 
+function calculateLatePenalty(submittedAt, dueAt, pointsPossible) {
+  const submitted = new Date(submittedAt);
+  const due = new Date(dueAt);
+  
+  // Check if submission was late
+  if (submitted > due) {
+    
+    const penalty = pointsPossible * 0.10; // NUMBER literal (0.10)
+    return penalty;
+  } else {
+    return 0;
+  }
+}
    
 
 
