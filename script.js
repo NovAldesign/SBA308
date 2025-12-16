@@ -112,8 +112,25 @@ const LearnerSubmissions = [
 // Create and manipulate arrays and objects
 // Use functions to handle repeated tasks
 
+// FUNCTION: Find assignment by ID
+// Uses: for...of loop 
+function findAssignmentById(assignments, assignmentId) {
+  for (const assignment of assignments) {
+    // IF/ELSE : Check if IDs match
+    if (assignment.id === assignmentId) {
+      return assignment;
+    }
+  }
+  return null;
+}
 
-
+function isAssignmentDue(dueDate) {
+  const currentDate = new Date("2023-03-15"); // STRING converted to date
+  const due = new Date(dueDate);
+  
+  // BOOLEAN value returned
+  return due <= currentDate;
+}
    
 
 
