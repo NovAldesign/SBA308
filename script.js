@@ -76,24 +76,45 @@ const LearnerSubmissions = [
   }
 ];
 
-function getLearnerData(CourseInfo, AssignmentGroup, submissions) {
-  
-  try {
-    // 1. Validate that the assignment group belongs to the course
-    if (AssignmentGroup.course_id !== course.id) {
-      throw new Error("AssignmentGroup does not belong to the specified course");
-    }
-    
-    return [];
-    
-  } catch (error) {
-    console.error("Error:", error.message);
-    return [];
 
-  }
-}
-    // Create empty object to store learners
-    // const learnerMap = {};
+// Psuedo 
+// I need to process student submission data and calculate:
+
+// Each student's weighted average (assignments worth more points count more)
+// Individual assignment scores as percentages
+// Apply 10% penalty for late submissions
+// Skip assignments not yet due
+// Handle errors gracefully
+
+
+
+// STEP 1: What data do I have?
+
+// CourseInfo: Contains course ID and name
+// AssignmentGroup: Contains list of assignments with due dates and points possible
+// LearnerSubmissions: Contains student submissions with scores and dates
+
+// STEP 2: Identify what I need to return
+// An array of objects, where each object contains:
+
+// Student ID
+// Weighted average (total points earned / total points possible)
+// Individual assignment percentages (score / points possible)
+
+// STEP 3: Requirements to implement
+
+// Use let and const appropriately
+// Use operators for calculations (+, -, *, /, ===, !==, etc.)
+// Store strings, numbers, and booleans in variables
+// Use at least 2 if/else statements for control flow
+// Use try/catch for error handling
+// Use 2 different types of loops
+// Create and manipulate arrays and objects
+// Use functions to handle repeated tasks
+
+
+
+   
 
 
 
