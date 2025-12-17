@@ -235,6 +235,46 @@ function getLearnerData(course, ag, submissions) {
       i++;
     }
 
+    // Create an array to hold our final results
+    const result = [];
+
+    // Loop through each learner in our map
+    for (const learnerId in learnerMap) {
+      const learner = learnerMap[learnerId];
+
+      // Calculate weighted average
+      const avg = learner.totalScore / learner.totalPossible;
+
+
+      const learnerResult = {
+        id: learner.id,
+        avg: avg
+      };
+
+
+      for (const key in learner) {
+
+        if (key !== "id" && key !== "totalScore" && key !== "totalPossible") {
+          learnerResult[key] = learner[key];
+        }
+      }
+
+      // Add this learner's result to our array
+      result.push(learnerResult);
+    }
+
+    // Return the final results
+    return result;
+
+  } catch (error) {
+    console.error("Fatal error:", error.message);
+    return [];
+  }
+}
+
+
+const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+console.log(result);
 
 
 
