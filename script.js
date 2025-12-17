@@ -127,7 +127,7 @@ function findAssignmentById(assignments, assignmentId) {
 function isAssignmentDue(dueDate) {
   const currentDate = new Date("2023-03-15"); // STRING converted to date
   const due = new Date(dueDate);
-  
+
   // BOOLEAN value returned
   return due <= currentDate;
 }
@@ -137,80 +137,107 @@ function isAssignmentDue(dueDate) {
 function calculateLatePenalty(submittedAt, dueAt, pointsPossible) {
   const submitted = new Date(submittedAt);
   const due = new Date(dueAt);
-  
+
   // Check if submission was late
   if (submitted > due) {
-    
-    const penalty = pointsPossible * 0.10; 
+
+    const penalty = pointsPossible * 0.10;
     return penalty;
   } else {
     return 0;
   }
 }
-   
+
 function getLearnerData(course, ag, submissions) {
-  
+
   // Handle errors in the entire function
   try {
-    
+
     //Validate course_id matches
     if (ag.course_id !== course.id) {
       throw new Error("AssignmentGroup does not belong to the specified course");
     }
-    
-    // Empty object to store learner data
+
+    // Store learner data
     const learnerMap = {};
-    
-    // while loop to process submissions
+
+    // While loop to process submissions
     let i = 0; // NUMBER variable
-    while (i < submissions.length) { 
+    while (i < submissions.length) {
       const submission = submissions[i];
-      
+
       // Handle errors for individual submissions
-      try {const submission = submissions[i];
+      try {
+        const submission = submissions[i];
 
         const learnerId = submission.learner_id;
         const assignmentId = submission.assignment_id;
         const score = submission.submission.score;
         const submittedAt = submission.submission.submitted_at;
-        
+
         //  Find assignment details
         const assignment = findAssignmentById(ag.assignments, assignmentId);
-        
+
         // Check if assignment exists
-        if (!assignment) { 
+        if (!assignment) {
           console.log(`Warning: Assignment ${assignmentId} not found`);
-          i++; 
+          i++;
           continue;
         }
-        
-    // Check if assignment is due
+
+        // Check if assignment is due
         const isDue = isAssignmentDue(assignment.due_at);
-        
-      //  Skip if not yet due
+
+        //  Skip if not yet due
         if (!isDue) {
           i++;
           continue;
         }
-      
-       if (!isAssignmentDue(assignment.due_at)) {
+
+        if (!isAssignmentDue(assignment.due_at)) {
           i++;
           continue;
         }
         //possible points
-     const pointsPossible = assignment.points_possible;
+        const pointsPossible = assignment.points_possible;
 
-      if (pointsPossible === 0) {
+        if (pointsPossible === 0) {
           throw new Error("Assignment has 0 points possible");
         }
 
         //late penalty
-         const penalty = calculateLatePenalty(submittedAt, assignment.due_at, pointsPossible);
-     
+        const penalty = calculateLatePenalty(submittedAt, assignment.due_at, pointsPossible);
+
         const adjustedScore = score - penalty;
 
-         const percentage = adjustedScore / pointsPossible;
-        
+        const percentage = adjustedScore / pointsPossible;
+
+        if (!learnerMap[learnerId]) {
+          learnerMap[learnerId] = {
+            id: learnerId,
+            totalScore: 0,
+            totalPossible: 0
+          };
+        }
+
+
+        learnerMap[learnerId].totalScore += adjustedScore;
+        learnerMap[learnerId].totalPossible += pointsPossible;
+
+
+        learnerMap[learnerId][assignmentId] = percentage;
+
+      } catch (error) {
+        console.log("Error processing submission:", error.message);
+      }
+
+
+      i++;
+    }
+
+
+
+
 
 // function getLearnerData(course, ag, submissions) {
 //   // here, we would process this data to achieve the desired result.
@@ -235,4 +262,3 @@ function getLearnerData(course, ag, submissions) {
 // const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
 // console.log(result);
-  
