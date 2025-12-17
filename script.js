@@ -141,15 +141,76 @@ function calculateLatePenalty(submittedAt, dueAt, pointsPossible) {
   // Check if submission was late
   if (submitted > due) {
     
-    const penalty = pointsPossible * 0.10; // NUMBER literal (0.10)
+    const penalty = pointsPossible * 0.10; 
     return penalty;
   } else {
     return 0;
   }
 }
    
+function getLearnerData(course, ag, submissions) {
+  
+  // Handle errors in the entire function
+  try {
+    
+    //Validate course_id matches
+    if (ag.course_id !== course.id) {
+      throw new Error("AssignmentGroup does not belong to the specified course");
+    }
+    
+    // Empty object to store learner data
+    const learnerMap = {};
+    
+    // while loop to process submissions
+    let i = 0; // NUMBER variable
+    while (i < submissions.length) { 
+      const submission = submissions[i];
+      
+      // Handle errors for individual submissions
+      try {const submission = submissions[i];
 
+        const learnerId = submission.learner_id;
+        const assignmentId = submission.assignment_id;
+        const score = submission.submission.score;
+        const submittedAt = submission.submission.submitted_at;
+        
+        //  Find assignment details
+        const assignment = findAssignmentById(ag.assignments, assignmentId);
+        
+        // Check if assignment exists
+        if (!assignment) { 
+          console.log(`Warning: Assignment ${assignmentId} not found`);
+          i++; 
+          continue;
+        }
+        
+    // Check if assignment is due
+        const isDue = isAssignmentDue(assignment.due_at);
+        
+      //  Skip if not yet due
+        if (!isDue) {
+          i++;
+          continue;
+        }
+      
+       if (!isAssignmentDue(assignment.due_at)) {
+          i++;
+          continue;
+        }
+        //possible points
+     const pointsPossible = assignment.points_possible;
 
+      if (pointsPossible === 0) {
+          throw new Error("Assignment has 0 points possible");
+        }
+
+        //late penalty
+         const penalty = calculateLatePenalty(submittedAt, assignment.due_at, pointsPossible);
+     
+        const adjustedScore = score - penalty;
+
+         const percentage = adjustedScore / pointsPossible;
+        
 
 // function getLearnerData(course, ag, submissions) {
 //   // here, we would process this data to achieve the desired result.
@@ -174,3 +235,4 @@ function calculateLatePenalty(submittedAt, dueAt, pointsPossible) {
 // const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
 // console.log(result);
+  
